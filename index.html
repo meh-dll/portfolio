@@ -455,51 +455,61 @@ const StartMenuItem = ({ item, onClose, onShutdown }) => {
       onMouseLeave={() => setHov(false)}
       onClick={() => { if (item.id === 'shutdown') onShutdown(); onClose(); }}
       style={{
-        padding:'6px 8px', display:'flex', alignItems:'center', gap:8,
+        padding:'4px 6px 4px 4px', display:'flex', alignItems:'center', gap:6,
         cursor:'default', background: hov ? '#000080' : 'transparent',
-        color: hov ? '#fff' : '#000',
+        color: hov ? '#fff' : '#000', minHeight:22,
       }}
     >
-      <span style={{ fontSize:18, width:24, textAlign:'center', flexShrink:0 }}>{item.icon}</span>
+      <div style={{ width:24, height:24, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+        <img src={item.icon} width={24} height={24} style={{ imageRendering:'pixelated' }} draggable={false} />
+      </div>
       <span style={{ fontFamily:WIN95_FONT, fontSize:11, flex:1 }}>{item.label}</span>
-      {item.arrow && <span style={{ fontSize:9 }}>▶</span>}
+      {item.arrow && <span style={{ fontFamily:WIN95_FONT, fontSize:9, marginLeft:4 }}>►</span>}
     </div>
   );
 };
 
 const Win95StartMenu = ({ onClose, onShutdown }) => {
   const items = [
-    { icon:'📁', label:'Programs', arrow:true },
-    { icon:'📄', label:'Documents', arrow:true },
-    { icon:'⚙️', label:'Settings', arrow:true },
-    { icon:'🔍', label:'Find', arrow:true },
-    { icon:'❓', label:'Help', arrow:false },
+    { icon:'icons/w95_47.png', label:'Programs',   arrow:true },
+    { icon:'icons/w95_2.png',  label:'Documents',  arrow:true },
+    { icon:'icons/w95_22.png', label:'Settings',   arrow:true },
+    { icon:'icons/w95_16.png', label:'Find',       arrow:true },
+    { icon:'icons/w95_23.png', label:'Help' },
+    { icon:'icons/w95_5.png',  label:'Run...' },
     { divider:true },
-    { icon:'⏻', label:'Shut Down...', id:'shutdown' },
+    { icon:'icons/w95_27.png', label:'Shut Down...', id:'shutdown' },
   ];
   return (
     <div
       onClick={e => e.stopPropagation()}
       style={{
-        position:'fixed', bottom:28, left:0, width:210,
+        position:'fixed', bottom:28, left:0, width:220,
         background: SILVER, ...raisedBorder, zIndex:10000,
         display:'flex', boxShadow:'2px 2px 0 #000',
+        borderTop:'2px solid #fff', borderLeft:'2px solid #fff',
+        borderBottom:'2px solid #808080', borderRight:'2px solid #808080',
       }}
     >
+      {/* Sidebar */}
       <div style={{
-        width:28, background:'#000080', display:'flex',
+        width:32, background:'#000080', display:'flex',
         flexDirection:'column', alignItems:'center', justifyContent:'flex-end',
-        paddingBottom:8, gap:6, flexShrink:0,
+        paddingBottom:6, flexShrink:0, overflow:'hidden',
       }}>
-        <img src="icons/windows95_logo.svg" width="16" height="14" draggable="false" />
-        <div style={{ writingMode:'vertical-lr', transform:'rotate(180deg)', lineHeight:1 }}>
-          <span style={{ fontFamily:WIN95_FONT, fontSize:14, fontWeight:'bold', color:'#fff', letterSpacing:1 }}>Windows</span>
-          <span style={{ fontFamily:WIN95_FONT, fontSize:12, color:'#c0c0c0', letterSpacing:2 }}> 95</span>
+        <div style={{
+          writingMode:'vertical-rl', transform:'rotate(180deg)',
+          display:'flex', flexDirection:'row', alignItems:'flex-end', gap:0,
+          userSelect:'none',
+        }}>
+          <span style={{ fontFamily:'Arial,sans-serif', fontSize:15, fontWeight:'bold', color:'#fff', letterSpacing:1 }}>Windows</span>
+          <span style={{ fontFamily:'Arial,sans-serif', fontSize:15, fontWeight:'bold', fontStyle:'italic', color:'#808080', letterSpacing:1 }}>95</span>
         </div>
       </div>
-      <div style={{ flex:1 }}>
+      {/* Items */}
+      <div style={{ flex:1, padding:'2px 0' }}>
         {items.map((item, i) => {
-          if (item.divider) return <div key={i} style={{ height:1, background:'#808080', margin:'3px 0' }} />;
+          if (item.divider) return <div key={i} style={{ height:1, background:'#808080', margin:'2px 2px' }} />;
           return <StartMenuItem key={i} item={item} onClose={onClose} onShutdown={onShutdown} />;
         })}
       </div>
