@@ -341,7 +341,7 @@ const StartBtn = ({ startOpen, onClick }) => {
   const active = startOpen || pressed;
   return (
     <button
-      onClick={onClick}
+      onClick={e => { e.stopPropagation(); onClick(); }}
       onMouseDown={() => setPressed(true)}
       onMouseUp={() => setPressed(false)}
       onMouseLeave={() => setPressed(false)}
