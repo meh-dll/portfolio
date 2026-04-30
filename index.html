@@ -449,67 +449,73 @@ const Win95Taskbar = ({ windows, activeId, onWindowClick, onStartClick, startOpe
 /* ── Start menu ── */
 const StartMenuItem = ({ item, onClose, onShutdown }) => {
   const [hov, setHov] = useState(false);
+  /* bold the first char to simulate underline shortcut key */
+  const labelEl = item.shortcut
+    ? <span style={{ fontFamily:WIN95_FONT, fontSize:11, flex:1 }}>
+        <u>{item.label[0]}</u>{item.label.slice(1)}
+      </span>
+    : <span style={{ fontFamily:WIN95_FONT, fontSize:11, flex:1 }}>{item.label}</span>;
   return (
     <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       onClick={() => { if (item.id === 'shutdown') onShutdown(); onClose(); }}
       style={{
-        padding:'4px 6px 4px 4px', display:'flex', alignItems:'center', gap:6,
+        padding:'3px 8px 3px 4px', display:'flex', alignItems:'center', gap:6,
         cursor:'default', background: hov ? '#000080' : 'transparent',
-        color: hov ? '#fff' : '#000', minHeight:22,
+        color: hov ? '#fff' : '#000', minHeight:40,
       }}
     >
-      <div style={{ width:24, height:24, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-        <img src={item.icon} width={24} height={24} style={{ imageRendering:'pixelated' }} draggable={false} />
+      <div style={{ width:34, height:34, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+        <img src={item.icon} width={32} height={32} style={{ imageRendering:'pixelated' }} draggable={false} />
       </div>
-      <span style={{ fontFamily:WIN95_FONT, fontSize:11, flex:1 }}>{item.label}</span>
-      {item.arrow && <span style={{ fontFamily:WIN95_FONT, fontSize:9, marginLeft:4 }}>►</span>}
+      {labelEl}
+      {item.arrow && <span style={{ fontFamily:WIN95_FONT, fontSize:9 }}>►</span>}
     </div>
   );
 };
 
 const Win95StartMenu = ({ onClose, onShutdown }) => {
   const items = [
-    { icon:'icons/w95_47.png', label:'Programs',   arrow:true },
-    { icon:'icons/w95_2.png',  label:'Documents',  arrow:true },
-    { icon:'icons/w95_22.png', label:'Settings',   arrow:true },
-    { icon:'icons/w95_16.png', label:'Find',       arrow:true },
-    { icon:'icons/w95_23.png', label:'Help' },
-    { icon:'icons/w95_5.png',  label:'Run...' },
+    { icon:'icons/w95_47.png', label:'Programs',     arrow:true, shortcut:true },
+    { icon:'icons/w95_2.png',  label:'Documents',    arrow:true, shortcut:true },
+    { icon:'icons/w95_22.png', label:'Settings',     arrow:true, shortcut:true },
+    { icon:'icons/w95_16.png', label:'Find',         arrow:true, shortcut:true },
+    { icon:'icons/w95_23.png', label:'Help',                     shortcut:true },
+    { icon:'icons/w95_5.png',  label:'Run...',                   shortcut:true },
     { divider:true },
-    { icon:'icons/w95_27.png', label:'Shut Down...', id:'shutdown' },
+    { icon:'icons/w95_27.png', label:'Shut Down...', id:'shutdown', shortcut:true },
   ];
   return (
     <div
       onClick={e => e.stopPropagation()}
       style={{
-        position:'fixed', bottom:28, left:0, width:220,
-        background: SILVER, ...raisedBorder, zIndex:10000,
-        display:'flex', boxShadow:'2px 2px 0 #000',
-        borderTop:'2px solid #fff', borderLeft:'2px solid #fff',
-        borderBottom:'2px solid #808080', borderRight:'2px solid #808080',
+        position:'fixed', bottom:28, left:0, width:230,
+        background: SILVER, zIndex:10000,
+        display:'flex', boxShadow:'2px 2px 4px rgba(0,0,0,0.5)',
+        border:'2px solid', borderColor:'#fff #808080 #808080 #fff',
       }}
     >
-      {/* Sidebar */}
+      {/* Sidebar — dark grey with Windows 95 branding */}
       <div style={{
-        width:32, background:'#000080', display:'flex',
+        width:30, background:'#808080', display:'flex',
         flexDirection:'column', alignItems:'center', justifyContent:'flex-end',
-        paddingBottom:6, flexShrink:0, overflow:'hidden',
+        paddingBottom:4, flexShrink:0, overflow:'hidden', position:'relative',
       }}>
         <div style={{
           writingMode:'vertical-rl', transform:'rotate(180deg)',
-          display:'flex', flexDirection:'row', alignItems:'flex-end', gap:0,
-          userSelect:'none',
+          userSelect:'none', lineHeight:1, display:'flex', flexDirection:'row', alignItems:'baseline',
         }}>
-          <span style={{ fontFamily:'Arial,sans-serif', fontSize:15, fontWeight:'bold', color:'#fff', letterSpacing:1 }}>Windows</span>
-          <span style={{ fontFamily:'Arial,sans-serif', fontSize:15, fontWeight:'bold', fontStyle:'italic', color:'#808080', letterSpacing:1 }}>95</span>
+          <span style={{ fontFamily:'Arial,sans-serif', fontSize:13, fontWeight:'bold', fontStyle:'italic', color:'#fff' }}>Windows</span>
+          <span style={{ fontFamily:'Arial,sans-serif', fontSize:20, fontWeight:'bold', fontStyle:'italic', color:'#ffff00' }}>95</span>
         </div>
       </div>
       {/* Items */}
-      <div style={{ flex:1, padding:'2px 0' }}>
+      <div style={{ flex:1, padding:'2px 0', background: SILVER }}>
         {items.map((item, i) => {
-          if (item.divider) return <div key={i} style={{ height:1, background:'#808080', margin:'2px 2px' }} />;
+          if (item.divider) return (
+            <div key={i} style={{ margin:'2px 4px', borderTop:'1px solid #808080', borderBottom:'1px solid #fff' }} />
+          );
           return <StartMenuItem key={i} item={item} onClose={onClose} onShutdown={onShutdown} />;
         })}
       </div>
