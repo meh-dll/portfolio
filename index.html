@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Windows 98</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+@font-face {
+  font-family: 'Pixelated MS Sans Serif';
+  font-style: normal; font-weight: 400;
+  src: url('fonts/ms_sans_serif.woff2') format('woff2'),
+       url('fonts/ms_sans_serif.woff') format('woff');
+}
+@font-face {
+  font-family: 'Pixelated MS Sans Serif';
+  font-style: normal; font-weight: 700;
+  src: url('fonts/ms_sans_serif_bold.woff2') format('woff2'),
+       url('fonts/ms_sans_serif_bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'VT323';
+  font-style: normal; font-weight: 400;
+  src: url('fonts/vt323.woff2') format('woff2');
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { width: 100%; height: 100%; overflow: hidden; }
+body { font-family: 'Pixelated MS Sans Serif', 'MS Sans Serif', Tahoma, sans-serif; }
+
+::-webkit-scrollbar { width: 17px; height: 17px; }
+::-webkit-scrollbar-track { background: #c0c0c0; }
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-top: 2px solid #fff; border-left: 2px solid #fff;
+  border-bottom: 2px solid #808080; border-right: 2px solid #808080;
+}
+::-webkit-scrollbar-corner { background: #c0c0c0; }
+::-webkit-scrollbar-button { background: #c0c0c0; border-top: 2px solid #fff; border-left: 2px solid #fff; border-bottom: 2px solid #808080; border-right: 2px solid #808080; }
+
+@keyframes rainbowShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes blockScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-48px); }
+}
+@keyframes fadeInOut {
+  0%,100% { opacity: 0.3; } 50% { opacity: 1; }
+}
+@keyframes desktopReveal {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes holyRise {
+  0%   { transform: translateY(130%); opacity: 0; }
+  15%  { opacity: 0.4; }
+  100% { transform: translateY(0);    opacity: 1; }
+}
+@keyframes holyGlow {
+  0%,100% { box-shadow: 0 0 40px 10px #ffd700, 0 0 80px 30px #ff9900, 0 0 140px 60px rgba(255,200,0,0.4); }
+  50%     { box-shadow: 0 0 70px 20px #fff176, 0 0 130px 50px #ffd700, 0 0 200px 90px rgba(255,220,0,0.6); }
+}
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes heavenFade {
+  from { opacity:0; } to { opacity:1; }
+}
+
+.mobile-warn { display: none; }
+@media (max-width: 700px) {
+  .mobile-warn { display: flex !important; }
+  #root { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile fallback -->
+<div class="mobile-warn" style="position:fixed;inset:0;background:#000080;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:99999;">
+  <img src="icons/windows95_logo.svg" width="60" height="52" />
+  <div style="background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:20px 24px;max-width:280px;text-align:center;">
+    <div style="font-family:'MS Sans Serif',Tahoma,sans-serif;font-size:13px;font-weight:bold;margin-bottom:8px;">⚠️ Display Warning</div>
+    <div style="font-family:'MS Sans Serif',Tahoma,sans-serif;font-size:11px;line-height:1.6;margin-bottom:16px;">
+      This site is best viewed on a desktop computer with a screen resolution of 1024×768 or higher.
+    </div>
+    <button onclick="document.querySelector('.mobile-warn').style.display='none';document.getElementById('root').style.display=''" style="font-family:'MS Sans Serif',Tahoma,sans-serif;font-size:11px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:4px 20px;cursor:pointer;">
+      OK
+    </button>
+  </div>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ════════════════════════════════════════════
+   WIN95 UI — presentational components
+   ════════════════════════════════════════════ */
+
+const WIN95_FONT = "'Pixelated MS Sans Serif','MS Sans Serif','Microsoft Sans Serif',Tahoma,Arial,sans-serif";
+const SILVER = '#c0c0c0';
+const NAVY = '#000080';
+
+const raisedBorder = { borderStyle:'solid', borderWidth:2, borderColor:'#ffffff #808080 #808080 #ffffff' };
+const insetBorder  = { borderStyle:'solid', borderWidth:2, borderColor:'#808080 #ffffff #ffffff #808080' };
+const thinRaised   = { borderStyle:'solid', borderWidth:1, borderColor:'#ffffff #808080 #808080 #ffffff' };
+const thinInset    = { borderStyle:'solid', borderWidth:1, borderColor:'#808080 #ffffff #ffffff #808080' };
+
+/* ── Authentic Win95 icons — extracted from system DLLs ── */
+const SECTION_ICONS = {
+  about:    'icons/w95_16.png',  // My Computer
+  projects: 'icons/w95_47.png',  // Folder with tools
+  skills:   'icons/w95_22.png',  // Colorful gears / Control Panel
+  writeups: 'icons/w95_60.png',  // Notepad
+  contact:  'icons/w95_14.png',  // Globe / Internet
+  ctf:      'icons/w98_certificate.png', // Certificate with seal
+  resume:   'icons/w95_2.png',   // WordPad document
+};
+
+/* ── Desktop icon ── */
+const DesktopIcon95 = ({ id, label, selected, onSelect, onDoubleClick, iconScale = 3 }) => {
+  const src = SECTION_ICONS[id] || 'icons/w95_4.png';
+  const px = iconScale === 2 ? 32 : iconScale === 4 ? 48 : 40;
+  return (
+    <div
+      onDoubleClick={onDoubleClick}
+      onClick={e => { e.stopPropagation(); onSelect(); }}
+      style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:3, padding:4,
+        cursor:'default', userSelect:'none', width:78 }}
+    >
+      <img
+        src={src}
+        width={px} height={px}
+        style={{ imageRendering:'pixelated', display:'block', filter:'drop-shadow(1px 2px 1px rgba(0,0,0,0.6))' }}
+        draggable={false}
+      />
+      <span style={{
+        fontFamily: WIN95_FONT, fontSize:11, color:'#fff',
+        textShadow:'1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000',
+        textAlign:'center', maxWidth:76, lineHeight:1.3, padding:'1px 3px',
+        background: selected ? '#000080' : 'transparent',
+      }}>{label}</span>
+    </div>
+  );
+};
+
+/* ── Button ── */
+const Btn95 = ({ children, onClick, style = {}, disabled = false }) => {
+  const [pressed, setPressed] = useState(false);
+  return (
+    <button
+      disabled={disabled}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      onClick={onClick}
+      style={{
+        fontFamily: WIN95_FONT, fontSize:11,
+        background: SILVER, color: disabled ? '#808080' : '#000',
+        padding:'3px 12px', cursor:'default', outline:'none', border:'none',
+        ...(pressed ? insetBorder : raisedBorder), ...style,
+      }}
+    >{children}</button>
+  );
+};
+
+/* ── Text input ── */
+const Input95 = ({ value, onChange, placeholder, style = {}, readOnly }) => (
+  <input
+    value={value} onChange={onChange} placeholder={placeholder} readOnly={readOnly}
+    style={{ fontFamily: WIN95_FONT, fontSize:11, background:'#fff',
+      padding:'2px 4px', outline:'none', border:'none', ...insetBorder, ...style }}
+  />
+);
+
+/* ── Tab strip ── */
+const TabStrip95 = ({ tabs, active, onSelect }) => (
+  <div style={{ display:'flex', borderBottom:'2px solid #808080', userSelect:'none' }}>
+    {tabs.map((tab, i) => (
+      <div key={tab} onClick={() => onSelect(i)} style={{
+        fontFamily: WIN95_FONT, fontSize:11, padding:'3px 12px',
+        cursor:'default', position:'relative', zIndex: active === i ? 1 : 0,
+        marginBottom: active === i ? -2 : 0,
+        background: active === i ? SILVER : '#a8a8a8',
+        borderTop: active === i ? '2px solid #fff' : '1px solid #808080',
+        borderLeft: active === i ? '2px solid #fff' : '1px solid #808080',
+        borderRight: active === i ? '2px solid #808080' : '1px solid #808080',
+        borderBottom: active === i ? 'none' : '2px solid #808080',
+        marginLeft: i > 0 ? -1 : 0,
+      }}>{tab}</div>
+    ))}
+  </div>
+);
+
+/* ── Skill badge ── */
+const SkillBadge95 = ({ label, dim }) => (
+  <span style={{
+    fontFamily: WIN95_FONT, fontSize:10, padding:'2px 6px',
+    background: dim ? '#a0a0a0' : SILVER,
+    ...thinRaised, display:'inline-block',
+    cursor:'default', whiteSpace:'nowrap', userSelect:'none',
+  }}>{label}</span>
+);
+
+/* ── Section label bar ── */
+const SectionBar95 = ({ children }) => (
+  <div style={{
+    fontFamily: WIN95_FONT, fontSize:11, fontWeight:'bold',
+    padding:'2px 6px', background:'#000080', color:'#fff', marginBottom:6, marginTop:4,
+  }}>{children}</div>
+);
+
+/* ── List row ── */
+const ListRow95 = ({ selected, onClick, children }) => (
+  <div onClick={onClick} style={{
+    display:'flex', alignItems:'center', gap:6, padding:'3px 4px',
+    cursor:'default', background: selected ? '#000080' : 'transparent',
+    color: selected ? '#fff' : '#000', fontFamily: WIN95_FONT, fontSize:11,
+    userSelect:'none',
+  }}>{children}</div>
+);
+
+/* ── Menu word in window menubar ── */
+const MenuWord = ({ children }) => {
+  const [hov, setHov] = useState(false);
+  return (
+    <span
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        fontFamily: WIN95_FONT, fontSize:11, padding:'2px 6px', cursor:'default',
+        background: hov ? '#000080' : 'transparent', color: hov ? '#fff' : '#000',
+      }}
+    >{children}</span>
+  );
+};
+
+/* ── Window chrome ── */
+const RESIZE_HANDLES = [
+  { edge:'n',  style:{ top:0, left:4, right:4, height:4, cursor:'n-resize' } },
+  { edge:'s',  style:{ bottom:0, left:4, right:4, height:4, cursor:'s-resize' } },
+  { edge:'e',  style:{ right:0, top:4, bottom:4, width:4, cursor:'e-resize' } },
+  { edge:'w',  style:{ left:0, top:4, bottom:4, width:4, cursor:'w-resize' } },
+  { edge:'ne', style:{ top:0, right:0, width:8, height:8, cursor:'ne-resize' } },
+  { edge:'nw', style:{ top:0, left:0, width:8, height:8, cursor:'nw-resize' } },
+  { edge:'se', style:{ bottom:0, right:0, width:8, height:8, cursor:'se-resize' } },
+  { edge:'sw', style:{ bottom:0, left:0, width:8, height:8, cursor:'sw-resize' } },
+];
+
+const Win95Window = ({
+  id, title, icon = '📁', children,
+  width = 420, height = 320, x = 80, y = 60,
+  isFocused, zIndex = 100,
+  onFocus, onClose, onMinimize, onMaximize,
+  isMaximized, isMinimized,
+  onDragStart, onResizeStart, contentBg = '#ffffff', contentPad = 4,
+  statusText = 'Ready',
+}) => {
+  if (isMinimized) return null;
+
+  const pos = isMaximized
+    ? { left:0, top:0, width:'100%', height:'calc(100% - 28px)' }
+    : { left:x, top:y, width, height };
+
+  return (
+    <div
+      onMouseDown={() => onFocus(id)}
+      style={{ position:'absolute', ...pos, display:'flex', flexDirection:'column',
+        background: SILVER, border:'1px solid #c0c0c0', boxShadow:'1px 1px 1px 1px #222222', zIndex }}
+    >
+      {/* Resize handles */}
+      {!isMaximized && RESIZE_HANDLES.map(h => (
+        <div key={h.edge} onMouseDown={e => { e.stopPropagation(); onResizeStart(id, h.edge, e.clientX, e.clientY, width, height, x, y); }}
+          style={{ position:'absolute', zIndex:10, ...h.style }} />
+      ))}
+      {/* Title bar */}
+      <div
+        onMouseDown={e => {
+          if (e.target.closest('[data-wbtn]')) return;
+          e.preventDefault();
+          onFocus(id);
+          if (!isMaximized) onDragStart(id, e.clientX, e.clientY);
+        }}
+        style={{
+          background: isFocused ? '#000080' : '#7b7b7b',
+          height:22, display:'flex', alignItems:'center',
+          justifyContent:'space-between', padding:'0 3px 0 4px',
+          cursor:'default', flexShrink:0, userSelect:'none',
+        }}
+      >
+        <span style={{ display:'flex', alignItems:'center', gap:4, fontFamily:WIN95_FONT, fontSize:11, color:'#fff', fontWeight:'bold' }}>
+          {SECTION_ICONS[id]
+            ? <img src={SECTION_ICONS[id]} width={14} height={14} style={{ imageRendering:'pixelated', flexShrink:0 }} draggable={false} />
+            : <span style={{ fontSize:13 }}>{icon}</span>
+          }
+          {title}
+        </span>
+        <div style={{ display:'flex', gap:2 }} data-wbtn="1">
+          {[['_', onMinimize], ['□', onMaximize], ['✕', onClose]].map(([s, fn]) => (
+            <button key={s} data-wbtn="1" onClick={fn} style={{
+              width:18, height:16, fontFamily:'Arial', fontSize: s === '✕' ? 11 : 10,
+              fontWeight: s === '✕' ? 'bold' : 'normal',
+              background: SILVER, cursor:'default', outline:'none', border:'none',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              ...raisedBorder, padding:0, lineHeight:1, flexShrink:0,
+            }}>{s}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* Menu bar */}
+      <div style={{
+        height:20, background: SILVER, borderBottom:'1px solid #808080',
+        display:'flex', alignItems:'center', padding:'0 2px', flexShrink:0,
+      }}>
+        {['File','Edit','View','Help'].map(m => <MenuWord key={m}>{m}</MenuWord>)}
+      </div>
+
+      {/* Content */}
+      <div style={{ flex:1, overflow:'auto', background: contentBg, margin:'0 5px 5px 5px', borderTop:'solid 2px #777777', borderLeft:'solid 2px #777777', borderRight:'solid 1px #fff', borderBottom:'solid 1px #fff', padding: contentPad }}>
+        {children}
+      </div>
+
+      {/* Status bar */}
+      <div style={{ height:18, background: SILVER, borderTop:'1px solid #808080', display:'flex', alignItems:'center', padding:'0 4px', gap:4, flexShrink:0 }}>
+        <div style={{ ...thinInset, padding:'0 6px', fontFamily:WIN95_FONT, fontSize:10, flex:1 }}>{statusText}</div>
+      </div>
+    </div>
+  );
+};
+
+
+/* ── Taskbar ── */
+const StartBtn = ({ startOpen, onClick }) => {
+  const [pressed, setPressed] = useState(false);
+  const active = startOpen || pressed;
+  return (
+    <button
+      onClick={onClick}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      style={{
+        height:24, padding:0, background:'none', border:'none',
+        outline:'none', cursor:'default', display:'flex', alignItems:'center',
+        opacity: active ? 0.85 : 1,
+        filter: active ? 'brightness(0.9)' : 'none',
+      }}
+    >
+      <img src="icons/start_btn.png" height="24" draggable="false" style={{ imageRendering:'pixelated', display:'block' }} />
+    </button>
+  );
+};
+
+const TaskBtn = ({ win, active, onClick }) => {
+  const [pressed, setPressed] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      style={{
+        height:22, minWidth:100, maxWidth:148, padding:'0 6px',
+        fontFamily:WIN95_FONT, fontSize:11, background: SILVER,
+        cursor:'default', outline:'none', border:'none',
+        display:'flex', alignItems:'center', gap:4, overflow:'hidden',
+        ...(active || pressed ? insetBorder : raisedBorder),
+      }}
+    >
+      {SECTION_ICONS[win.id]
+        ? <img src={SECTION_ICONS[win.id]} width={16} height={16} style={{ imageRendering:'pixelated', flexShrink:0 }} draggable={false} />
+        : <span style={{ fontSize:12, flexShrink:0 }}>{win.icon}</span>
+      }
+      <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{win.title}</span>
+    </button>
+  );
+};
+
+/* Quick Launch icons for the taskbar */
+const QUICK_LAUNCH = [
+  { title:'About Me',  id:'about'    },
+  { title:'Projects',  id:'projects' },
+  { title:'Skills',    id:'skills'   },
+];
+const QuickLaunchBtn = ({ id, title, onClick }) => {
+  const [hov, setHov] = useState(false);
+  const src = SECTION_ICONS[id] || 'icons/w95_4.png';
+  return (
+    <div
+      title={title}
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        width:26, height:26, display:'flex', alignItems:'center', justifyContent:'center',
+        cursor:'default', background: hov ? 'rgba(255,255,255,0.25)' : 'transparent',
+        borderRadius:1,
+      }}
+    >
+      <img src={src} width={20} height={20} style={{ imageRendering:'pixelated' }} draggable={false} />
+    </div>
+  );
+};
+
+const Win95Taskbar = ({ windows, activeId, onWindowClick, onStartClick, startOpen, time, onQuickLaunch }) => (
+  <div style={{
+    position:'fixed', bottom:0, left:0, right:0, height:28,
+    background:'#c0c0c0',
+    borderTop:'2px solid #ffffff',
+    display:'flex', alignItems:'center', padding:'2px 3px', gap:2, zIndex:9999,
+    userSelect:'none',
+  }}>
+    <StartBtn startOpen={startOpen} onClick={onStartClick} />
+
+    {/* Quick Launch strip */}
+    <div style={{ width:1, height:22, background:'#808080', margin:'0 3px' }} />
+    <div style={{ display:'flex', alignItems:'center', gap:1, marginRight:2 }}>
+      {QUICK_LAUNCH.map(ql => (
+        <QuickLaunchBtn key={ql.id} id={ql.id} title={ql.title} onClick={() => onQuickLaunch(ql.id)} />
+      ))}
+    </div>
+    <div style={{ width:1, height:22, background:'#808080', margin:'0 3px' }} />
+
+    {/* Open window buttons */}
+    <div style={{ display:'flex', gap:2, flex:1, overflow:'hidden' }}>
+      {windows.filter(w => w.isOpen).map(w => (
+        <TaskBtn key={w.id} win={w} active={activeId === w.id && !w.isMinimized} onClick={() => onWindowClick(w.id)} />
+      ))}
+    </div>
+
+    {/* System tray */}
+    <div style={{
+      marginLeft:'auto', display:'flex', alignItems:'center', gap:4,
+      padding:'2px 8px', ...thinInset, fontFamily:WIN95_FONT, fontSize:11, whiteSpace:'nowrap',
+      background:'#c0c0c0',
+    }}>
+      <span style={{ fontSize:13 }}>🔊</span>
+      {time}
+    </div>
+  </div>
+);
+
+/* ── Start menu ── */
+const StartMenuItem = ({ item, onClose, onShutdown }) => {
+  const [hov, setHov] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      onClick={() => { if (item.id === 'shutdown') onShutdown(); onClose(); }}
+      style={{
+        padding:'6px 8px', display:'flex', alignItems:'center', gap:8,
+        cursor:'default', background: hov ? '#000080' : 'transparent',
+        color: hov ? '#fff' : '#000',
+      }}
+    >
+      <span style={{ fontSize:18, width:24, textAlign:'center', flexShrink:0 }}>{item.icon}</span>
+      <span style={{ fontFamily:WIN95_FONT, fontSize:11, flex:1 }}>{item.label}</span>
+      {item.arrow && <span style={{ fontSize:9 }}>▶</span>}
+    </div>
+  );
+};
+
+const Win95StartMenu = ({ onClose, onShutdown }) => {
+  const items = [
+    { icon:'📁', label:'Programs', arrow:true },
+    { icon:'📄', label:'Documents', arrow:true },
+    { icon:'⚙️', label:'Settings', arrow:true },
+    { icon:'🔍', label:'Find', arrow:true },
+    { icon:'❓', label:'Help', arrow:false },
+    { divider:true },
+    { icon:'⏻', label:'Shut Down...', id:'shutdown' },
+  ];
+  return (
+    <div
+      onClick={e => e.stopPropagation()}
+      style={{
+        position:'fixed', bottom:28, left:0, width:210,
+        background: SILVER, ...raisedBorder, zIndex:10000,
+        display:'flex', boxShadow:'2px 2px 0 #000',
+      }}
+    >
+      <div style={{
+        width:28, background:'#000080', display:'flex',
+        flexDirection:'column', alignItems:'center', justifyContent:'flex-end',
+        paddingBottom:8, gap:6, flexShrink:0,
+      }}>
+        <img src="icons/windows95_logo.svg" width="16" height="14" draggable="false" />
+        <div style={{ writingMode:'vertical-lr', transform:'rotate(180deg)', lineHeight:1 }}>
+          <span style={{ fontFamily:WIN95_FONT, fontSize:14, fontWeight:'bold', color:'#fff', letterSpacing:1 }}>Windows</span>
+          <span style={{ fontFamily:WIN95_FONT, fontSize:12, color:'#c0c0c0', letterSpacing:2 }}> 95</span>
+        </div>
+      </div>
+      <div style={{ flex:1 }}>
+        {items.map((item, i) => {
+          if (item.divider) return <div key={i} style={{ height:1, background:'#808080', margin:'3px 0' }} />;
+          return <StartMenuItem key={i} item={item} onClose={onClose} onShutdown={onShutdown} />;
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* ── Right-click context menu ── */
+const CtxItem = ({ label }) => {
+  const [hov, setHov] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        padding:'4px 20px', fontFamily:WIN95_FONT, fontSize:11, cursor:'default',
+        background: hov ? '#000080' : 'transparent', color: hov ? '#fff' : '#000',
+      }}
+    >{label}</div>
+  );
+};
+
+const Win95ContextMenu = ({ x, y, onClose }) => {
+  const items = [
+    { label:'Arrange Icons ▶' },
+    { label:'Refresh' },
+    { divider:true },
+    { label:'New Folder' },
+    { divider:true },
+    { label:'Properties' },
+  ];
+  return (
+    <div
+      style={{ position:'fixed', left:x, top:y, width:168, background: SILVER, ...raisedBorder, zIndex:10001, boxShadow:'2px 2px 0 #000' }}
+      onClick={onClose}
+    >
+      {items.map((item, i) => {
+        if (item.divider) return <div key={i} style={{ height:1, background:'#808080', margin:'2px 0' }} />;
+        return <CtxItem key={i} label={item.label} />;
+      })}
+    </div>
+  );
+};
+
+
+/* ════════════════════════════════════════════
+   WINDOW CONTENT — all 7 sections
+   ════════════════════════════════════════════ */
+
+/* ── About Me ── */
+const AboutContent = () => {
+  const avatarRef = useRef(null);
+  useEffect(() => {
+    const el = avatarRef.current; if (!el) return;
+    const ctx = el.getContext('2d');
+    const S = 5;
+    const SK='#FDBCB4', H='#3D2314', EY='#111', SH='#1a3a7a', _=null, W='#fff', T='#e8a090';
+    const face = [
+      [_,_,H,H,H,H,H,H,_,_],
+      [_,H,H,H,H,H,H,H,H,_],
+      [_,H,SK,SK,SK,SK,SK,H,H,_],
+      [_,H,SK,EY,SK,SK,EY,SK,H,_],
+      [_,H,SK,SK,SK,SK,SK,SK,H,_],
+      [_,H,SK,SK,T,T,SK,SK,H,_],
+      [_,_,H,SK,W,W,SK,H,_,_],
+      [_,_,H,H,H,H,H,H,_,_],
+      [_,SH,SH,SH,SH,SH,SH,SH,_,_],
+      [SH,SH,SH,SH,SH,SH,SH,SH,SH,_],
+    ];
+    ctx.clearRect(0,0,el.width,el.height);
+    face.forEach((row,r) => row.forEach((col,c) => {
+      if(!col) return;
+      ctx.fillStyle = col;
+      ctx.fillRect(c*S, r*S, S, S);
+    }));
+  }, []);
+
+  return (
+    <div style={{ padding:8, fontFamily:WIN95_FONT, fontSize:11, background:'#c0c0c0' }}>
+      <div style={{ display:'flex', gap:12, marginBottom:12 }}>
+        <div style={{ flexShrink:0, ...insetBorder, width:50, height:50, background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
+          <canvas ref={avatarRef} width={50} height={50} style={{ imageRendering:'pixelated' }} />
+        </div>
+        <div>
+          <div style={{ fontSize:13, fontWeight:'bold', marginBottom:2 }}>Izak Beaumont</div>
+          <div style={{ color:'#000080', marginBottom:6, fontWeight:'bold', fontSize:11 }}>Junior Information Security Analyst</div>
+          <div style={{ lineHeight:1.6, color:'#222' }}>
+            Information security analyst with hands-on experience in penetration testing, vulnerability assessments, cloud security, and SIEM operations. Active CTF competitor and continuous learner with a passion for offensive security.
+          </div>
+        </div>
+      </div>
+
+      <div style={{ borderTop:'1px solid #808080', paddingTop:8, marginBottom:10 }}>
+        <div style={{ fontWeight:'bold', marginBottom:6 }}>🌐 Platforms</div>
+        <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
+          {['HackTheBox','CTFtime','GitHub','TryHackMe'].map(p => <SkillBadge95 key={p} label={p} />)}
+        </div>
+      </div>
+
+      <div style={{ borderTop:'1px solid #808080', paddingTop:8, marginBottom:10 }}>
+        <div style={{ fontWeight:'bold', marginBottom:6 }}>⚡ Core Competencies</div>
+        <div style={{ lineHeight:1.7, color:'#333' }}>
+          Penetration testing &amp; technical report writing, security awareness programme delivery, SIEM deployment &amp; evaluation, AWS cloud security assessments, web application security scanning, and cross-team vulnerability remediation.
+        </div>
+      </div>
+
+      <div style={{ borderTop:'1px solid #808080', paddingTop:8 }}>
+        <div style={{ fontWeight:'bold', marginBottom:6 }}>📍 Background</div>
+        <div style={{ lineHeight:1.7, color:'#333' }}>
+          Based in London. Background in web development &amp; IT support, with qualifications in Graphic Design and Cyber Security. Actively engaged in CTF competitions and security research outside of work.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── Projects ── */
+const ProjectsContent = () => {
+  const [selected, setSelected] = useState(0);
+  const projects = [
+    { icon:'🛡️', name:'AutoRecon Wrapper', desc:'Python tool that automates multi-stage reconnaissance for CTF machines and pentests. Integrates Nmap, Gobuster, and Nikto with smart output parsing.', tags:['Python','Nmap','Automation'], link:'https://github.com' },
+    { icon:'🔐', name:'JWT Forge', desc:'Tool for analysing and forging JWT tokens during web app pentests. Supports alg:none bypass, RS256→HS256 confusion, and key injection attacks.', tags:['Python','Web Security','JWT'], link:'https://github.com' },
+    { icon:'🌐', name:'SSRF Hunter', desc:'Burp Suite extension to detect and automate SSRF vulnerability scanning. Includes cloud metadata endpoint probing and blind SSRF via DNS callbacks.', tags:['Java','Burp Suite','SSRF'], link:'https://github.com' },
+    { icon:'🔍', name:'AD Enum Toolkit', desc:'Collection of PowerShell and Python scripts for Active Directory enumeration during internal pentests. BloodHound integration included.', tags:['PowerShell','Python','Active Directory'], link:'https://github.com' },
+    { icon:'📡', name:'WiFi Audit Scripts', desc:'Bash scripts for automated WiFi security auditing using aircrack-ng suite. Handles WPA2 handshake capture, PMKID attacks, and deauth automation.', tags:['Bash','WiFi','Aircrack'], link:'https://github.com' },
+  ];
+  const proj = projects[selected];
+  return (
+    <div style={{ display:'flex', height:'100%', fontFamily:WIN95_FONT, fontSize:11 }}>
+      <div style={{ width:180, borderRight:'2px solid #808080', overflow:'auto', flexShrink:0 }}>
+        {projects.map((p, i) => (
+          <ListRow95 key={i} selected={selected === i} onClick={() => setSelected(i)}>
+            <span style={{ fontSize:16 }}>{p.icon}</span>
+            <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.name}</span>
+          </ListRow95>
+        ))}
+      </div>
+      <div style={{ flex:1, padding:10, overflow:'auto' }}>
+        <div style={{ fontSize:13, fontWeight:'bold', marginBottom:6, display:'flex', alignItems:'center', gap:6 }}>
+          <span style={{ fontSize:20 }}>{proj.icon}</span>{proj.name}
+        </div>
+        <div style={{ lineHeight:1.7, marginBottom:10, color:'#333' }}>{proj.desc}</div>
+        <div style={{ marginBottom:10 }}>
+          {proj.tags.map(t => (
+            <span key={t} style={{ fontFamily:WIN95_FONT, fontSize:10, background:'#000080', color:'#fff', padding:'1px 5px', marginRight:4, display:'inline-block' }}>{t}</span>
+          ))}
+        </div>
+        <Btn95 onClick={() => window.open(proj.link, '_blank')}>🐙 View on GitHub</Btn95>
+      </div>
+    </div>
+  );
+};
+
+/* ── Skills ── */
+const SkillsContent = () => {
+  const cats = [
+    { label:'🔴 Offensive / Pentesting', skills:['Burp Suite','ZAP','Nmap','Metasploit','SQLmap','Nikto','Gobuster','Hydra','John the Ripper'] },
+    { label:'🟣 Exploitation & RE', skills:['GDB','pwndbg','Ghidra','pwntools','ROPgadget','Radare2'] },
+    { label:'☁️ Cloud & Infrastructure', skills:['AWS','Docker','Linux','Terraform','Kubernetes','VirtualBox'] },
+    { label:'💻 Languages', skills:['Python','Bash','JavaScript','PowerShell','Go','C'] },
+    { label:'📡 Networking', skills:['Wireshark','tcpdump','Scapy','OpenVPN','Proxychains'] },
+    { label:'🔓 Web Security', skills:['OWASP Top 10','XSS','SQLi','SSRF','IDOR','CSRF','XXE'] },
+  ];
+  return (
+    <div style={{ padding:6, fontFamily:WIN95_FONT, fontSize:11 }}>
+      {cats.map(cat => (
+        <div key={cat.label} style={{ marginBottom:10 }}>
+          <SectionBar95>{cat.label}</SectionBar95>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:4, paddingLeft:4 }}>
+            {cat.skills.map(s => <SkillBadge95 key={s} label={s} />)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ── Write-Ups ── */
+const WriteUpsContent = () => {
+  const [tab, setTab] = useState(0);
+  const [selected, setSelected] = useState(0);
+  const ctfs = [
+    { icon:'🚩', title:'HTB — Unreleased Machine: Shadow', date:'Apr 2025', diff:'Hard', tags:['Linux','PrivEsc'] },
+    { icon:'🚩', title:'HTB — Surveillance', date:'Mar 2025', diff:'Medium', tags:['Web','CVE'] },
+    { icon:'🚩', title:'picoCTF 2025 — Web Category Sweep', date:'Mar 2025', diff:'Various', tags:['Web','OSINT'] },
+    { icon:'🚩', title:'HTB Cyberapocalypse — Pwn Challs', date:'Feb 2025', diff:'Hard', tags:['Pwn','Rev'] },
+    { icon:'🚩', title:'TryHackMe — Advent of Cyber 2024', date:'Dec 2024', diff:'Easy', tags:['Various'] },
+  ];
+  const blogs = [
+    { icon:'📝', title:'Intro to SSRF — From Discovery to RCE', date:'Mar 2025', tags:['SSRF','Web'] },
+    { icon:'📝', title:'JWT Confusion Attacks Explained', date:'Feb 2025', tags:['Web','Auth'] },
+    { icon:'📝', title:'Active Directory: From Zero to DA', date:'Jan 2025', tags:['AD','Pentest'] },
+    { icon:'📝', title:'Burp Suite Extensions I Use Daily', date:'Dec 2024', tags:['Tooling'] },
+  ];
+  const rows = tab === 0 ? ctfs : blogs;
+  const row = rows[Math.min(selected, rows.length - 1)];
+
+  return (
+    <div style={{ display:'flex', flexDirection:'column', height:'100%', fontFamily:WIN95_FONT, fontSize:11 }}>
+      <div style={{ padding:'4px 4px 0' }}>
+        <TabStrip95 tabs={['CTF Walkthroughs','Blog Posts']} active={tab} onSelect={i => { setTab(i); setSelected(0); }} />
+      </div>
+      <div style={{ display:'flex', flex:1, overflow:'hidden' }}>
+        <div style={{ width:220, borderRight:'2px solid #808080', overflow:'auto', flexShrink:0 }}>
+          {rows.map((r, i) => (
+            <ListRow95 key={i} selected={selected === i} onClick={() => setSelected(i)}>
+              <span>{r.icon}</span>
+              <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', flex:1 }}>{r.title}</span>
+            </ListRow95>
+          ))}
+        </div>
+        <div style={{ flex:1, padding:10, overflow:'auto' }}>
+          <div style={{ fontSize:12, fontWeight:'bold', marginBottom:4 }}>{row.icon} {row.title}</div>
+          <div style={{ color:'#555', marginBottom:6, fontSize:10 }}>📅 {row.date} {row.diff ? `· Difficulty: ${row.diff}` : ''}</div>
+          <div style={{ display:'flex', gap:3, marginBottom:8, flexWrap:'wrap' }}>
+            {row.tags.map(t => (
+              <span key={t} style={{ background:'#000080', color:'#fff', fontFamily:WIN95_FONT, fontSize:10, padding:'1px 5px' }}>{t}</span>
+            ))}
+          </div>
+          <div style={{ lineHeight:1.7, color:'#333', marginBottom:10 }}>
+            Full write-up covering methodology, exploitation steps, and lessons learned. Includes PoC scripts where applicable.
+          </div>
+          <Btn95 onClick={() => {}}>📄 Read Write-Up</Btn95>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── Contact ── */
+const ContactContent = () => {
+  const links = [
+    { icon:'📧', label:'Email', val:'you@email.com', href:'mailto:you@email.com', btn:'Send Email' },
+    { icon:'🐙', label:'GitHub', val:'github.com/yourhandle', href:'https://github.com', btn:'Open GitHub' },
+    { icon:'💼', label:'LinkedIn', val:'linkedin.com/in/yourname', href:'https://linkedin.com', btn:'Connect' },
+    { icon:'💀', label:'HackTheBox', val:'app.hackthebox.com/users/xxxxx', href:'https://hackthebox.com', btn:'HTB Profile' },
+    { icon:'🟥', label:'TryHackMe', val:'tryhackme.com/p/yourhandle', href:'https://tryhackme.com', btn:'THM Profile' },
+  ];
+  return (
+    <div style={{ padding:10, fontFamily:WIN95_FONT, fontSize:11 }}>
+      <div style={{ marginBottom:12, color:'#444', lineHeight:1.6 }}>
+        Feel free to reach out for collaboration, security assessments, or just to talk shop. Response time: usually &lt;24h.
+      </div>
+      {links.map(l => (
+        <div key={l.label} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
+          <span style={{ fontSize:18, width:24, textAlign:'center', flexShrink:0 }}>{l.icon}</span>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:10, color:'#666', marginBottom:2 }}>{l.label}</div>
+            <Input95 value={l.val} readOnly style={{ width:'100%' }} />
+          </div>
+          <Btn95 onClick={() => window.open(l.href, '_blank')} style={{ flexShrink:0, padding:'3px 8px' }}>
+            {l.btn}
+          </Btn95>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ── CTF Achievements ── */
+const CTFContent = () => {
+  const stats = [
+    { v:'#42',       l:'HTB Global Rank' },
+    { v:'37',        l:'Machines Pwned' },
+    { v:'12',        l:'CTF Event Wins' },
+    { v:'Pro Hacker',l:'HTB Rank' },
+  ];
+  const badges = [
+    { icon:'🏅', label:'Pro Hacker', color:'#FFD700' },
+    { icon:'🌊', label:'Offshore',   color:'#4FC3F7' },
+    { icon:'🔍', label:'OSINT',      color:'#81C784' },
+    { icon:'🔬', label:'Forensics',  color:'#CE93D8' },
+    { icon:'🕸️', label:'Web Guru',  color:'#FF8A65' },
+    { icon:'🔐', label:'Crypto',     color:'#80DEEA' },
+    { icon:'💥', label:'Pwn Master', color:'#EF9A9A' },
+    { icon:'🔧', label:'Rev Eng',    color:'#BCAAA4' },
+  ];
+  const recent = [
+    { icon:'🚩', name:'HTB — Shadow',           pts:'+40pts',  date:'Apr 2025' },
+    { icon:'🚩', name:'picoCTF 2025 — Top 5%',  pts:'+150pts', date:'Mar 2025' },
+    { icon:'🚩', name:'HTB Cyberapocalypse',     pts:'+200pts', date:'Feb 2025' },
+  ];
+  return (
+    <div style={{ padding:6, fontFamily:WIN95_FONT, fontSize:11 }}>
+      <div style={{ display:'flex', gap:6, marginBottom:10 }}>
+        {stats.map(s => (
+          <div key={s.l} style={{ flex:1, ...thinInset, background:'#fff', padding:'6px 4px', textAlign:'center' }}>
+            <div style={{ fontSize:16, fontWeight:'bold', color:'#000080', fontFamily:WIN95_FONT }}>{s.v}</div>
+            <div style={{ fontSize:9, color:'#555', lineHeight:1.3 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      <SectionBar95>🏆 Badges</SectionBar95>
+      <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:10, padding:'4px 0' }}>
+        {badges.map(b => (
+          <div key={b.label} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, width:52 }}>
+            <div style={{ width:38, height:38, borderRadius:'50%', background:b.color, border:'2px solid #888', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18 }}>
+              {b.icon}
+            </div>
+            <span style={{ fontSize:9, textAlign:'center', lineHeight:1.2 }}>{b.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <SectionBar95>⏱ Recent Activity</SectionBar95>
+      {recent.map((r, i) => (
+        <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'3px 4px', borderBottom:'1px solid #ddd' }}>
+          <span>{r.icon}</span>
+          <span style={{ flex:1 }}>{r.name}</span>
+          <span style={{ color:'#006600', fontWeight:'bold' }}>{r.pts}</span>
+          <span style={{ color:'#888', fontSize:10 }}>{r.date}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ── Resume ── */
+const playChoir = () => {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const master = ctx.createGain();
+  master.gain.value = 0.9;
+  master.connect(ctx.destination);
+
+  const voices = [
+    { freq:261.63, det:-8  }, { freq:329.63, det:6   }, { freq:392.00, det:-4  },
+    { freq:523.25, det:10  }, { freq:659.25, det:-6  }, { freq:783.99, det:4   },
+    { freq:130.81, det:3   }, { freq:196.00, det:-10 },
+  ];
+  voices.forEach(({ freq, det }) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    osc.detune.value = det;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 2.5);
+    g.gain.setValueAtTime(0.15, ctx.currentTime + 9);
+    g.gain.linearRampToValueAtTime(0, ctx.currentTime + 14);
+    osc.connect(g); g.connect(master);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 14);
+  });
+};
+
+const HolyCVPreview = ({ onClose }) => {
+  // Frame image: 764×900px. Inner transparent opening measured by pixel scan:
+  // x: 158–609 (l=20.7%, r=79.7%)  y: 154–743 (t=17.1%, b=82.6%)
+  const FRAME_ASPECT = 900 / 764;
+  const INNER = { l: 0.207, t: 0.171, r: 0.797, b: 0.826 };
+
+  const initW = 620;
+  const initH = Math.round(initW * FRAME_ASPECT);
+
+  const [pos, setPos] = useState(() => ({
+    x: Math.max(20, Math.round((window.innerWidth - initW) / 2)),
+    y: Math.max(10, Math.round((window.innerHeight - initH) / 2)),
+  }));
+  const [size, setSize] = useState({ w: initW, h: initH });
+
+  const sizeRef = useRef({ w: initW, h: initH });
+  const posRef = useRef(pos);
+  const frameDragRef = useRef(null);
+  const resizeDragRef = useRef(null);
+  const canvasRef = useRef(null);
+  const animRef = useRef(null);
+  const sparklesRef = useRef([]);
+
+  useEffect(() => { playChoir(); }, []);
+
+  // Keep refs in sync
+  useEffect(() => { sizeRef.current = size; }, [size]);
+  useEffect(() => { posRef.current = pos; }, [pos]);
+
+  // Resize canvas element when size changes
+  useEffect(() => {
+    const c = canvasRef.current;
+    if (c) { c.width = size.w; c.height = size.h; }
+  }, [size]);
+
+  // Pixel sparkle animation — runs once, reads sizeRef for current dimensions
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = sizeRef.current.w;
+    canvas.height = sizeRef.current.h;
+    const ctx = canvas.getContext('2d');
+
+    const makeSparkle = () => {
+      const { w, h } = sizeRef.current;
+      const bx = w * 0.22, by = h * 0.19;
+      let x, y;
+      const side = (Math.random() * 4) | 0;
+      if (side === 0) { x = Math.random() * w; y = Math.random() * by; }
+      else if (side === 1) { x = Math.random() * w; y = h - Math.random() * by; }
+      else if (side === 2) { x = Math.random() * bx; y = Math.random() * h; }
+      else               { x = w - Math.random() * bx; y = Math.random() * h; }
+      const maxLife = (Math.random() * 50 + 20) | 0;
+      return { x, y, sz: Math.random() * 3 + 1, life: maxLife, maxLife, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, hue: 38 + Math.random() * 28 };
+    };
+
+    sparklesRef.current = Array.from({ length: 120 }, makeSparkle);
+
+    const tick = () => {
+      const { w, h } = sizeRef.current;
+      ctx.clearRect(0, 0, w, h);
+      sparklesRef.current = sparklesRef.current.map(s => {
+        const t = s.life / s.maxLife;
+        const alpha = Math.sin(t * Math.PI);
+        ctx.save();
+        ctx.globalAlpha = alpha * 0.9;
+        ctx.fillStyle = `hsl(${s.hue},100%,${70 + alpha * 28 | 0}%)`;
+        ctx.imageSmoothingEnabled = false;
+        const px = Math.round(s.x), py = Math.round(s.y), sz = Math.ceil(s.sz);
+        ctx.fillRect(px, py, sz, sz);
+        // subtle outer glow pixel
+        ctx.globalAlpha = alpha * 0.35;
+        ctx.fillRect(px - 1, py - 1, sz + 2, sz + 2);
+        ctx.restore();
+        const next = { ...s, x: s.x + s.vx, y: s.y + s.vy, life: s.life - 1 };
+        return next.life <= 0 ? makeSparkle() : next;
+      });
+      animRef.current = requestAnimationFrame(tick);
+    };
+    tick();
+    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
+  }, []);
+
+  // Global drag / resize handlers
+  useEffect(() => {
+    const onMove = e => {
+      if (frameDragRef.current) {
+        const { sx, sy, px, py } = frameDragRef.current;
+        setPos({ x: px + e.clientX - sx, y: py + e.clientY - sy });
+      }
+      if (resizeDragRef.current) {
+        const { sx, sw } = resizeDragRef.current;
+        const newW = Math.max(300, sw + e.clientX - sx);
+        setSize({ w: newW, h: Math.round(newW * FRAME_ASPECT) });
+      }
+    };
+    const onUp = () => { frameDragRef.current = null; resizeDragRef.current = null; };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+  }, []);
+
+  const startDrag = e => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    frameDragRef.current = { sx: e.clientX, sy: e.clientY, px: posRef.current.x, py: posRef.current.y };
+  };
+
+  const iL = Math.round(size.w * INNER.l);
+  const iT = Math.round(size.h * INNER.t);
+  const iW = Math.round(size.w * (INNER.r - INNER.l));
+  const iH = Math.round(size.h * (INNER.b - INNER.t));
+
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:99998, pointerEvents:'none' }}>
+      {/* Dim overlay — no click-to-close */}
+      <div style={{
+        position:'absolute', inset:0,
+        background:'radial-gradient(ellipse at center, rgba(255,220,80,0.1) 0%, rgba(0,0,0,0.72) 100%)',
+        animation:'heavenFade 0.8s ease',
+      }} />
+
+      {/* God rays emanating from frame centre */}
+      {[...Array(8)].map((_,i) => (
+        <div key={i} style={{
+          position:'absolute',
+          left: pos.x + size.w / 2,
+          top: pos.y + size.h / 2,
+          width: 3, height: Math.max(window.innerHeight, window.innerWidth),
+          background:'linear-gradient(to bottom, rgba(255,230,100,0.18), transparent)',
+          transform:`translateX(-50%) rotate(${i * 45}deg)`,
+          transformOrigin:'top center',
+          pointerEvents:'none',
+        }} />
+      ))}
+
+      {/* Frame + CV container */}
+      <div
+        onMouseDown={startDrag}
+        style={{
+          position:'absolute', left: pos.x, top: pos.y,
+          width: size.w, height: size.h,
+          cursor:'grab', pointerEvents:'all',
+          animation:'holyRise 9s cubic-bezier(0.05,0.7,0.2,1) forwards',
+          userSelect:'none',
+          filter:'drop-shadow(0 0 30px rgba(255,200,0,0.85)) drop-shadow(0 0 70px rgba(255,140,0,0.5))',
+        }}
+      >
+        {/* Pixel sparkle canvas (behind frame) */}
+        <canvas ref={canvasRef} style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:1, imageRendering:'pixelated' }} />
+
+        {/* CV content inside the transparent opening */}
+        <div
+          onMouseDown={e => e.stopPropagation()}
+          style={{
+            position:'absolute', left:iL, top:iT, width:iW, height:iH,
+            overflow:'auto', background:'#fffff8', zIndex:2, cursor:'default',
+          }}
+        >
+          <div style={{ padding:'18px 22px', fontFamily:'Georgia,serif' }}>
+            <div style={{ textAlign:'center', borderBottom:'2px solid #c8a400', paddingBottom:10, marginBottom:14 }}>
+              <div style={{ fontSize:17, fontWeight:'bold', letterSpacing:2 }}>IZAK BEAUMONT</div>
+              <div style={{ fontSize:10, color:'#555', marginTop:3, letterSpacing:1 }}>JUNIOR INFORMATION SECURITY ANALYST</div>
+              <div style={{ fontSize:9, color:'#888', marginTop:3 }}>London, UK</div>
+            </div>
+            <div style={{ fontSize:9.5, lineHeight:1.7, color:'#333' }}>
+              <div style={{ fontWeight:'bold', fontSize:10, color:'#8b6914', marginBottom:3, letterSpacing:1 }}>PROFILE</div>
+              <p style={{ marginBottom:10 }}>Information security analyst with hands-on experience in penetration testing, vulnerability assessments, cloud security, and SIEM operations. Active CTF competitor with a passion for offensive security.</p>
+              <div style={{ fontWeight:'bold', fontSize:10, color:'#8b6914', marginBottom:3, letterSpacing:1 }}>CORE COMPETENCIES</div>
+              <p style={{ marginBottom:10 }}>Penetration testing · Technical report writing · Security awareness programme delivery · SIEM deployment &amp; evaluation · AWS cloud security · Web application security scanning · Cross-team vulnerability remediation</p>
+              <div style={{ fontWeight:'bold', fontSize:10, color:'#8b6914', marginBottom:3, letterSpacing:1 }}>BACKGROUND</div>
+              <p style={{ marginBottom:10 }}>Background in web development &amp; IT support. Qualifications in Graphic Design and Cyber Security. Based in London. Actively engaged in CTF competitions and security research.</p>
+              <div style={{ fontWeight:'bold', fontSize:10, color:'#8b6914', marginBottom:3, letterSpacing:1 }}>PLATFORMS</div>
+              <p>HackTheBox · CTFtime · GitHub · TryHackMe</p>
+            </div>
+            <div style={{ textAlign:'center', marginTop:14, fontSize:8.5, color:'#aaa', borderTop:'1px solid #e8d89a', paddingTop:7 }}>
+              Last updated: April 2025 · PDF (A4)
+            </div>
+          </div>
+        </div>
+
+        {/* Gold frame image — over CV, transparent center reveals CV */}
+        <img
+          src="icons/gold_frame.png"
+          draggable={false}
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:3 }}
+        />
+
+        {/* Close button — top-right of frame border */}
+        <div
+          title="Close"
+          onMouseDown={e => e.stopPropagation()}
+          onClick={onClose}
+          style={{
+            position:'absolute', top:16, right:16,
+            width:24, height:24, zIndex:10,
+            background:'#8b0000', color:'#fff',
+            border:'2px solid #fff',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            fontSize:12, fontWeight:'bold', cursor:'pointer',
+            fontFamily:WIN95_FONT, lineHeight:1,
+            boxShadow:'1px 1px 0 #400000',
+          }}
+        >✕</div>
+
+        {/* Resize handle — bottom-right corner */}
+        <div
+          onMouseDown={e => {
+            e.stopPropagation(); e.preventDefault();
+            resizeDragRef.current = { sx: e.clientX, sw: sizeRef.current.w };
+          }}
+          style={{
+            position:'absolute', bottom:10, right:10,
+            width:18, height:18, zIndex:10,
+            cursor:'se-resize',
+            background:'rgba(255,215,0,0.25)',
+            border:'1px solid rgba(255,215,0,0.5)',
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ResumeContent = () => {
+  const [showPreview, setShowPreview] = useState(false);
+  return (
+    <>
+    <div style={{ padding:10, fontFamily:WIN95_FONT, fontSize:11 }}>
+      <div style={{ display:'flex', gap:12, marginBottom:14, alignItems:'flex-start' }}>
+        <div style={{ fontSize:40, lineHeight:1 }}>📄</div>
+        <div>
+          <div style={{ fontSize:13, fontWeight:'bold', marginBottom:4 }}>Resume / CV</div>
+          <div style={{ color:'#444', lineHeight:1.7 }}>
+            Last updated: April 2025<br/>
+            Format: PDF (A4)<br/>
+            Includes: Experience, Certs, Projects, Skills
+          </div>
+        </div>
+      </div>
+      <div style={{ display:'flex', gap:6 }}>
+        <Btn95 onClick={() => { const a = document.createElement('a'); a.href = 'cv.pdf'; a.download = 'Izak_Beaumont_CV.pdf'; a.click(); }}>⬇ Download PDF</Btn95>
+        <Btn95 onClick={() => setShowPreview(true)}>👁 Preview</Btn95>
+      </div>
+    </div>
+    {showPreview && <HolyCVPreview onClose={() => setShowPreview(false)} />}
+    </>
+  );
+};
+
+
+/* ════════════════════════════════════════════
+   TWEAKS PANEL
+   ════════════════════════════════════════════ */
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = useState(defaults);
+  const setTweak = useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues(prev => ({ ...prev, ...edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = useState(false);
+  const dragRef = useRef(null);
+  const offsetRef = useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = useCallback(() => {
+    const panel = dragRef.current; if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    offsetRef.current = {
+      x: Math.min(Math.max(PAD, window.innerWidth - w - PAD), Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(Math.max(PAD, window.innerHeight - h - PAD), Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(clampToViewport) : null;
+    if (ro) { ro.observe(document.documentElement); return () => ro.disconnect(); }
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+
+  useEffect(() => {
+    const onMsg = e => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const onDragStart = e => {
+    const panel = dragRef.current; if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = ev => {
+      offsetRef.current = { x: startRight - (ev.clientX - sx), y: startBottom - (ev.clientY - sy) };
+      clampToViewport();
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" onMouseDown={e => e.stopPropagation()} onClick={() => setOpen(false)}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) {
+  return <><div className="twk-sect">{label}</div>{children}</>;
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'} onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = useRef(null);
+  const [dragging, setDragging] = useState(false);
+  const opts = options.map(o => typeof o === 'object' ? o : { value: o, label: o });
+  const idx = Math.max(0, opts.findIndex(o => o.value === value));
+  const n = opts.length;
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
+  const segAt = clientX => {
+    const r = trackRef.current.getBoundingClientRect();
+    const i = Math.floor(((clientX - r.left - 2) / (r.width - 4)) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = e => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = ev => { const v = segAt(ev.clientX); if (v !== valueRef.current) onChange(v); };
+    const up = () => { setDragging(false); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <div className="twk-row">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown} className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb" style={{ left:`calc(2px + ${idx} * (100% - 4px) / ${n})`, width:`calc((100% - 4px) / ${n})` }} />
+        {opts.map(o => <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>{o.label}</button>)}
+      </div>
+    </div>
+  );
+}
+
+
+/* ════════════════════════════════════════════
+   BOOT SCREEN
+   ════════════════════════════════════════════ */
+
+function playChime() {
+  try {
+    const ctx = new AudioContext();
+    const master = ctx.createGain();
+    master.gain.value = 0.35;
+    master.connect(ctx.destination);
+    [
+      { f:523.25, t:0.0, d:1.4 },
+      { f:659.25, t:0.65, d:1.4 },
+      { f:783.99, t:1.25, d:1.8 },
+      { f:1046.5, t:1.9,  d:0.7 },
+      { f:880.0,  t:2.4,  d:2.8 },
+    ].forEach(({ f, t, d }) => {
+      const osc = ctx.createOscillator();
+      const g   = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      g.gain.setValueAtTime(0, ctx.currentTime + t);
+      g.gain.linearRampToValueAtTime(0.55, ctx.currentTime + t + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + d);
+      osc.connect(g); g.connect(master);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + d + 0.1);
+    });
+  } catch (e) {}
+}
+
+const BootScreen = ({ onComplete }) => {
+  const [loaded, setLoaded] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    playChime();
+    timerRef.current = setTimeout(() => {
+      setLoaded(true);
+      setTimeout(onComplete, 700);
+    }, 4500);
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
+  const skip = () => { clearTimeout(timerRef.current); setLoaded(true); setTimeout(onComplete, 300); };
+
+  return (
+    <div onClick={skip} style={{
+      position:'fixed', inset:0,
+      background:'#000',
+      backgroundImage:'url(icons/win95_boot.jpg)',
+      backgroundSize:'cover', backgroundPosition:'center',
+      cursor:'default', userSelect:'none',
+      opacity: loaded ? 0 : 1, transition:'opacity 0.7s ease',
+      overflow:'hidden',
+    }}>
+      {/* Animated bottom strip */}
+      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:9, overflow:'hidden' }}>
+        <div style={{
+          display:'flex', gap:0, width:'calc(100vw + 96px)',
+          height:'100%',
+          animation:'blockScroll 0.35s linear infinite',
+        }}>
+          {Array.from({length:160}).map((_,i) => (
+            <div key={i} style={{
+              width:16, height:'100%', flexShrink:0,
+              background: i % 3 === 0 ? '#3d4560' : i % 3 === 1 ? '#5f6e90' : '#8090b2',
+            }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+/* ════════════════════════════════════════════
+   DESKTOP
+   ════════════════════════════════════════════ */
+
+const WINDOW_DEFS = [
+  { id:'about',    title:'About Me',        icon:'👤', width:460, height:360, Content: AboutContent },
+  { id:'projects', title:'Projects',         icon:'💾', width:560, height:420, Content: ProjectsContent },
+  { id:'skills',   title:'Skills',           icon:'⚙️', width:460, height:400, Content: SkillsContent },
+  { id:'writeups', title:'Write-Ups',        icon:'📝', width:520, height:420, Content: WriteUpsContent },
+  { id:'contact',  title:'Contact',          icon:'📧', width:380, height:380, Content: ContactContent },
+  { id:'ctf',      title:'CTF Achievements', icon:'🏆', width:480, height:400, Content: CTFContent },
+  { id:'resume',   title:'Resume',           icon:'📄', width:400, height:380, Content: ResumeContent },
+];
+
+const ICON_LAYOUT = [
+  { id:'about',    x:20, y:20 },
+  { id:'projects', x:20, y:120 },
+  { id:'skills',   x:20, y:220 },
+  { id:'writeups', x:20, y:320 },
+  { id:'ctf',      x:20, y:420 },
+  { id:'resume',   x:110, y:20 },
+  { id:'contact',  x:110, y:120 },
+];
+
+const Desktop = ({ tweaks }) => {
+  const initWindows = () => WINDOW_DEFS.map(d => ({
+    ...d,
+    isOpen: false, isMinimized: false, isMaximized: false,
+    position: { x:80, y:60 }, zIndex: 100,
+  }));
+
+  const [windows, setWindows] = useState(initWindows);
+  const [maxZ, setMaxZ] = useState(100);
+  const [activeId, setActiveId] = useState(null);
+  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [startOpen, setStartOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState(null);
+  const [time, setTime] = useState('');
+  const [shutdownMsg, setShutdownMsg] = useState(false);
+  const [iconPositions, setIconPositions] = useState(() =>
+    Object.fromEntries(ICON_LAYOUT.map(ic => [ic.id, { x: ic.x, y: ic.y }]))
+  );
+  const dragRef = useRef(null);
+  const resizeDragRef = useRef(null);
+  const iconDragRef = useRef(null);
+  const iconWasDragged = useRef(false);
+
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' }));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const onMove = e => {
+      if (dragRef.current) {
+        const { id, ox, oy } = dragRef.current;
+        setWindows(prev => prev.map(w =>
+          w.id === id ? { ...w, position: { x: e.clientX - ox, y: e.clientY - oy } } : w
+        ));
+      }
+      if (resizeDragRef.current) {
+        const { id, edge, startX, startY, startW, startH, startPX, startPY } = resizeDragRef.current;
+        const dx = e.clientX - startX, dy = e.clientY - startY;
+        let nw = startW, nh = startH, nx = startPX, ny = startPY;
+        if (edge.includes('e')) nw = Math.max(220, startW + dx);
+        if (edge.includes('s')) nh = Math.max(120, startH + dy);
+        if (edge.includes('w')) { nw = Math.max(220, startW - dx); nx = startPX + startW - nw; }
+        if (edge.includes('n')) { nh = Math.max(120, startH - dy); ny = startPY + startH - nh; }
+        setWindows(prev => prev.map(w => w.id === id ? { ...w, width: nw, height: nh, position: { x: nx, y: ny } } : w));
+      }
+      if (iconDragRef.current) {
+        const d = iconDragRef.current;
+        if (!d.dragging && (Math.abs(e.clientX - d.startX) > 4 || Math.abs(e.clientY - d.startY) > 4)) {
+          d.dragging = true;
+        }
+        if (d.dragging) {
+          setIconPositions(prev => ({
+            ...prev,
+            [d.id]: { x: Math.max(0, e.clientX - d.ox), y: Math.max(0, e.clientY - d.oy) },
+          }));
+        }
+      }
+    };
+    const onUp = () => {
+      dragRef.current = null;
+      resizeDragRef.current = null;
+      if (iconDragRef.current) {
+        iconWasDragged.current = iconDragRef.current.dragging;
+        iconDragRef.current = null;
+      }
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    return () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
+  }, []);
+
+  const focusWindow = useCallback((id) => {
+    setMaxZ(z => {
+      const nz = z + 1;
+      setWindows(prev => prev.map(w => w.id === id ? { ...w, zIndex: nz } : w));
+      return nz;
+    });
+    setActiveId(id);
+  }, []);
+
+  const startResize = useCallback((id, edge, cx, cy, w, h, px, py) => {
+    resizeDragRef.current = { id, edge, startX: cx, startY: cy, startW: w, startH: h, startPX: px, startPY: py };
+  }, []);
+
+  const startDrag = useCallback((id, cx, cy) => {
+    setWindows(prev => {
+      const win = prev.find(w => w.id === id);
+      if (!win) return prev;
+      dragRef.current = { id, ox: cx - win.position.x, oy: cy - win.position.y };
+      return prev;
+    });
+  }, []);
+
+  const openWindow = useCallback((id) => {
+    setWindows(prev => {
+      const openC = prev.filter(w => w.isOpen).length;
+      return prev.map(w => {
+        if (w.id !== id) return w;
+        if (w.isOpen && !w.isMinimized) return w;
+        return { ...w, isOpen:true, isMinimized:false, position:{ x:60 + openC*28, y:40 + openC*28 } };
+      });
+    });
+    focusWindow(id);
+  }, [focusWindow]);
+
+  const closeWindow = useCallback((id) => {
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, isOpen:false, isMinimized:false, isMaximized:false } : w));
+    setActiveId(prev => prev === id ? null : prev);
+  }, []);
+
+  const minimizeWindow = useCallback((id) => {
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, isMinimized:true } : w));
+    setActiveId(prev => prev === id ? null : prev);
+  }, []);
+
+  const maximizeWindow = useCallback((id) => {
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, isMaximized: !w.isMaximized } : w));
+  }, []);
+
+  const handleTaskbarClick = useCallback((id) => {
+    const win = windows.find(w => w.id === id);
+    if (!win) return;
+    if (win.isMinimized || activeId !== id) {
+      setWindows(prev => prev.map(w => w.id === id ? { ...w, isMinimized:false } : w));
+      focusWindow(id);
+    } else {
+      minimizeWindow(id);
+    }
+  }, [windows, activeId, focusWindow, minimizeWindow]);
+
+  const bgStyle = {
+    teal: '#008080',
+    grey: '#6e6e6e',
+    dark: '#1a1a2e',
+  }[tweaks.wallpaper] || '#008080';
+
+  if (shutdownMsg) {
+    return (
+      <div style={{ position:'fixed', inset:0, background:'#000', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ fontFamily:WIN95_FONT, fontSize:18, color:'#fff', textAlign:'center' }}>
+          <div style={{ marginBottom:16 }}>It is now safe to turn off your computer.</div>
+          <Btn95 onClick={() => setShutdownMsg(false)}>Cancel</Btn95>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{ position:'fixed', inset:0, background: bgStyle, animation:'desktopReveal 0.6s ease', overflow:'hidden' }}
+      onClick={() => { setStartOpen(false); setSelectedIcon(null); setContextMenu(null); }}
+      onContextMenu={e => { e.preventDefault(); setContextMenu({ x:e.clientX, y:e.clientY }); setStartOpen(false); }}
+    >
+      {/* Desktop icons */}
+      {ICON_LAYOUT.map(ic => {
+        const def = WINDOW_DEFS.find(d => d.id === ic.id);
+        const pos = iconPositions[ic.id];
+        return (
+          <div
+            key={ic.id}
+            style={{ position:'absolute', left:pos.x, top:pos.y, cursor:'default' }}
+            onMouseDown={e => {
+              e.stopPropagation();
+              iconWasDragged.current = false;
+              iconDragRef.current = { id: ic.id, ox: e.clientX - pos.x, oy: e.clientY - pos.y, startX: e.clientX, startY: e.clientY, dragging: false };
+              setSelectedIcon(ic.id);
+            }}
+          >
+            <DesktopIcon95
+              id={ic.id}
+              label={def.title}
+              selected={selectedIcon === ic.id}
+              iconScale={tweaks.iconSize === 'large' ? 4 : tweaks.iconSize === 'small' ? 2 : 3}
+              onSelect={() => { if (iconWasDragged.current) return; setSelectedIcon(ic.id); }}
+              onDoubleClick={() => { if (iconWasDragged.current) return; openWindow(ic.id); }}
+            />
+          </div>
+        );
+      })}
+
+      {/* Windows */}
+      {windows.filter(w => w.isOpen).map(w => {
+        const C = w.Content;
+        return (
+          <Win95Window
+            key={w.id}
+            {...w}
+            x={w.position.x}
+            y={w.position.y}
+            isFocused={activeId === w.id}
+            onFocus={focusWindow}
+            onClose={() => closeWindow(w.id)}
+            onMinimize={() => minimizeWindow(w.id)}
+            onMaximize={() => maximizeWindow(w.id)}
+            onDragStart={startDrag}
+            onResizeStart={startResize}
+            contentBg="#c0c0c0"
+            contentPad={0}
+            statusText={`${w.title} — Double-click icons to open`}
+          >
+            <C />
+          </Win95Window>
+        );
+      })}
+
+      {/* Taskbar */}
+      <Win95Taskbar
+        windows={windows}
+        activeId={activeId}
+        onWindowClick={handleTaskbarClick}
+        onStartClick={() => setStartOpen(s => !s)}
+        startOpen={startOpen}
+        time={tweaks.showClock ? time : ''}
+        onQuickLaunch={openWindow}
+      />
+
+      {/* Start menu */}
+      {startOpen && (
+        <Win95StartMenu
+          onClose={() => setStartOpen(false)}
+          onShutdown={() => { setStartOpen(false); setShutdownMsg(true); }}
+        />
+      )}
+
+      {/* Context menu */}
+      {contextMenu && (
+        <Win95ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+
+/* ════════════════════════════════════════════
+   APP ROOT
+   ════════════════════════════════════════════ */
+
+const TWEAK_DEFAULTS = {
+  wallpaper: 'teal',
+  iconSize: 'small',
+  showClock: true,
+};
+
+const App = () => {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [phase, setPhase] = useState('boot');
+
+  return (
+    <>
+      {phase === 'boot'
+        ? <BootScreen onComplete={() => setPhase('desktop')} />
+        : <Desktop tweaks={tweaks} />
+      }
+      {phase === 'desktop' && (
+        <TweaksPanel>
+          <TweakSection label="Desktop">
+            <TweakRadio
+              label="Wallpaper"
+              value={tweaks.wallpaper}
+              options={[
+                { value:'teal', label:'Teal' },
+                { value:'grey', label:'Grey' },
+                { value:'dark', label:'Dark' },
+              ]}
+              onChange={v => setTweak('wallpaper', v)}
+            />
+            <TweakRadio
+              label="Icon Size"
+              value={tweaks.iconSize}
+              options={[
+                { value:'small',  label:'Small'  },
+                { value:'normal', label:'Normal' },
+                { value:'large',  label:'Large'  },
+              ]}
+              onChange={v => setTweak('iconSize', v)}
+            />
+          </TweakSection>
+          <TweakSection label="Taskbar">
+            <TweakToggle label="Show Clock" value={tweaks.showClock} onChange={v => setTweak('showClock', v)} />
+          </TweakSection>
+        </TweaksPanel>
+      )}
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
