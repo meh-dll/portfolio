@@ -636,11 +636,8 @@ const AboutContent = () => {
 const ProjectsContent = () => {
   const [selected, setSelected] = useState(0);
   const projects = [
-    { icon:'🛡️', name:'AutoRecon Wrapper', desc:'Python tool that automates multi-stage reconnaissance for CTF machines and pentests. Integrates Nmap, Gobuster, and Nikto with smart output parsing.', tags:['Python','Nmap','Automation'], link:'https://github.com' },
-    { icon:'🔐', name:'JWT Forge', desc:'Tool for analysing and forging JWT tokens during web app pentests. Supports alg:none bypass, RS256→HS256 confusion, and key injection attacks.', tags:['Python','Web Security','JWT'], link:'https://github.com' },
-    { icon:'🌐', name:'SSRF Hunter', desc:'Burp Suite extension to detect and automate SSRF vulnerability scanning. Includes cloud metadata endpoint probing and blind SSRF via DNS callbacks.', tags:['Java','Burp Suite','SSRF'], link:'https://github.com' },
-    { icon:'🔍', name:'AD Enum Toolkit', desc:'Collection of PowerShell and Python scripts for Active Directory enumeration during internal pentests. BloodHound integration included.', tags:['PowerShell','Python','Active Directory'], link:'https://github.com' },
-    { icon:'📡', name:'WiFi Audit Scripts', desc:'Bash scripts for automated WiFi security auditing using aircrack-ng suite. Handles WPA2 handshake capture, PMKID attacks, and deauth automation.', tags:['Bash','WiFi','Aircrack'], link:'https://github.com' },
+    { icon:'🛰️', name:'GAOFEN SAT Bot', date:'Jul 2025 – Present', desc:'Discord bot using Python (discord.py) that integrates OSINT tools for website analysis, image OCR, and social media lookups, plus a unique Street View location guessing game.', tags:['Python','discord.py','OSINT'], link:'https://github.com/meh-dll' },
+    { icon:'🔍', name:'CTF_BEAST Vulnerability Scanner', date:'Apr 2025 – Present', desc:'Custom-built vulnerability scanner for CTF players, bug bounty hunters, and security researchers. Built with Python, Tkinter, and ttkbootstrap.\n\nCore Features:\n• Reflected & DOM XSS detection (with Puppeteer headless path tracing)\n• SQL injection fuzzing\n• JavaScript pattern analysis (eval, innerHTML, document.write, etc.)\n• CORS, Insecure Cookies, Clickjacking, Open Redirect, Directory Listing checks\n• Smart endpoint discovery & JS analysis\n• Automated PDF reports & vulnerability charts\n• SQLite scan logging per session\n• Real-time dashboard UI with logs, filtering, and export tools', tags:['Python','Web Application Security','Tkinter','ttkbootstrap'], link:'https://github.com/meh-dll' },
   ];
   const proj = projects[selected];
   return (
@@ -654,10 +651,11 @@ const ProjectsContent = () => {
         ))}
       </div>
       <div style={{ flex:1, padding:10, overflow:'auto' }}>
-        <div style={{ fontSize:13, fontWeight:'bold', marginBottom:6, display:'flex', alignItems:'center', gap:6 }}>
+        <div style={{ fontSize:13, fontWeight:'bold', marginBottom:4, display:'flex', alignItems:'center', gap:6 }}>
           <span style={{ fontSize:20 }}>{proj.icon}</span>{proj.name}
         </div>
-        <div style={{ lineHeight:1.7, marginBottom:10, color:'#333' }}>{proj.desc}</div>
+        {proj.date && <div style={{ color:'#555', fontSize:10, marginBottom:6 }}>📅 {proj.date}</div>}
+        <div style={{ lineHeight:1.7, marginBottom:10, color:'#333', whiteSpace:'pre-line' }}>{proj.desc}</div>
         <div style={{ marginBottom:10 }}>
           {proj.tags.map(t => (
             <span key={t} style={{ fontFamily:WIN95_FONT, fontSize:10, background:'#000080', color:'#fff', padding:'1px 5px', marginRight:4, display:'inline-block' }}>{t}</span>
