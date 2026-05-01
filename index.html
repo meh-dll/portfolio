@@ -694,56 +694,11 @@ const SkillsContent = () => {
 };
 
 /* ── Write-Ups ── */
-const WriteUpsContent = () => {
-  const [tab, setTab] = useState(0);
-  const [selected, setSelected] = useState(0);
-  const ctfs = [
-    { icon:'🚩', title:'HTB — Unreleased Machine: Shadow', date:'Apr 2025', diff:'Hard', tags:['Linux','PrivEsc'] },
-    { icon:'🚩', title:'HTB — Surveillance', date:'Mar 2025', diff:'Medium', tags:['Web','CVE'] },
-    { icon:'🚩', title:'picoCTF 2025 — Web Category Sweep', date:'Mar 2025', diff:'Various', tags:['Web','OSINT'] },
-    { icon:'🚩', title:'HTB Cyberapocalypse — Pwn Challs', date:'Feb 2025', diff:'Hard', tags:['Pwn','Rev'] },
-    { icon:'🚩', title:'TryHackMe — Advent of Cyber 2024', date:'Dec 2024', diff:'Easy', tags:['Various'] },
-  ];
-  const blogs = [
-    { icon:'📝', title:'Intro to SSRF — From Discovery to RCE', date:'Mar 2025', tags:['SSRF','Web'] },
-    { icon:'📝', title:'JWT Confusion Attacks Explained', date:'Feb 2025', tags:['Web','Auth'] },
-    { icon:'📝', title:'Active Directory: From Zero to DA', date:'Jan 2025', tags:['AD','Pentest'] },
-    { icon:'📝', title:'Burp Suite Extensions I Use Daily', date:'Dec 2024', tags:['Tooling'] },
-  ];
-  const rows = tab === 0 ? ctfs : blogs;
-  const row = rows[Math.min(selected, rows.length - 1)];
-
-  return (
-    <div style={{ display:'flex', flexDirection:'column', height:'100%', fontFamily:WIN95_FONT, fontSize:11 }}>
-      <div style={{ padding:'4px 4px 0' }}>
-        <TabStrip95 tabs={['CTF Walkthroughs','Blog Posts']} active={tab} onSelect={i => { setTab(i); setSelected(0); }} />
-      </div>
-      <div style={{ display:'flex', flex:1, overflow:'hidden' }}>
-        <div style={{ width:220, borderRight:'2px solid #808080', overflow:'auto', flexShrink:0 }}>
-          {rows.map((r, i) => (
-            <ListRow95 key={i} selected={selected === i} onClick={() => setSelected(i)}>
-              <span>{r.icon}</span>
-              <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', flex:1 }}>{r.title}</span>
-            </ListRow95>
-          ))}
-        </div>
-        <div style={{ flex:1, padding:10, overflow:'auto' }}>
-          <div style={{ fontSize:12, fontWeight:'bold', marginBottom:4 }}>{row.icon} {row.title}</div>
-          <div style={{ color:'#555', marginBottom:6, fontSize:10 }}>📅 {row.date} {row.diff ? `· Difficulty: ${row.diff}` : ''}</div>
-          <div style={{ display:'flex', gap:3, marginBottom:8, flexWrap:'wrap' }}>
-            {row.tags.map(t => (
-              <span key={t} style={{ background:'#000080', color:'#fff', fontFamily:WIN95_FONT, fontSize:10, padding:'1px 5px' }}>{t}</span>
-            ))}
-          </div>
-          <div style={{ lineHeight:1.7, color:'#333', marginBottom:10 }}>
-            Full write-up covering methodology, exploitation steps, and lessons learned. Includes PoC scripts where applicable.
-          </div>
-          <Btn95 onClick={() => {}}>📄 Read Write-Up</Btn95>
-        </div>
-      </div>
-    </div>
-  );
-};
+const WriteUpsContent = () => (
+  <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', fontFamily:WIN95_FONT, fontSize:13, color:'#555' }}>
+    📝 Coming soon
+  </div>
+);
 
 /* ── Contact ── */
 const ContactContent = () => {
