@@ -636,8 +636,8 @@ const AboutContent = () => {
 const ProjectsContent = () => {
   const [selected, setSelected] = useState(0);
   const projects = [
-    { icon:'🛰️', name:'GAOFEN SAT Bot', date:'Jul 2025 – Present', desc:'Discord bot using Python (discord.py) that integrates OSINT tools for website analysis, image OCR, and social media lookups, plus a unique Street View location guessing game.', tags:['Python','discord.py','OSINT'], link:'https://github.com/meh-dll' },
-    { icon:'🔍', name:'CTF_BEAST Vulnerability Scanner', date:'Apr 2025 – Present', desc:'Custom-built vulnerability scanner for CTF players, bug bounty hunters, and security researchers. Built with Python, Tkinter, and ttkbootstrap.\n\nCore Features:\n• Reflected & DOM XSS detection (with Puppeteer headless path tracing)\n• SQL injection fuzzing\n• JavaScript pattern analysis (eval, innerHTML, document.write, etc.)\n• CORS, Insecure Cookies, Clickjacking, Open Redirect, Directory Listing checks\n• Smart endpoint discovery & JS analysis\n• Automated PDF reports & vulnerability charts\n• SQLite scan logging per session\n• Real-time dashboard UI with logs, filtering, and export tools', tags:['Python','Web Application Security','Tkinter','ttkbootstrap'], link:'https://github.com/meh-dll' },
+    { icon:'🛰️', name:'GAOFEN SAT Bot', date:'Jul 2025 – Present', desc:'Discord bot using Python (discord.py) that integrates OSINT tools for website analysis, image OCR, and social media lookups, plus a unique Street View location guessing game.', tags:['Python','discord.py','OSINT'] },
+    { icon:'🔍', name:'CTF_BEAST Vulnerability Scanner', date:'Apr 2025 – Present', desc:'Custom-built vulnerability scanner for CTF players, bug bounty hunters, and security researchers. Built with Python, Tkinter, and ttkbootstrap.\n\nCore Features:\n• Reflected & DOM XSS detection (with Puppeteer headless path tracing)\n• SQL injection fuzzing\n• JavaScript pattern analysis (eval, innerHTML, document.write, etc.)\n• CORS, Insecure Cookies, Clickjacking, Open Redirect, Directory Listing checks\n• Smart endpoint discovery & JS analysis\n• Automated PDF reports & vulnerability charts\n• SQLite scan logging per session\n• Real-time dashboard UI with logs, filtering, and export tools', tags:['Python','Web Application Security','Tkinter','ttkbootstrap'] },
   ];
   const proj = projects[selected];
   return (
@@ -661,7 +661,7 @@ const ProjectsContent = () => {
             <span key={t} style={{ fontFamily:WIN95_FONT, fontSize:10, background:'#000080', color:'#fff', padding:'1px 5px', marginRight:4, display:'inline-block' }}>{t}</span>
           ))}
         </div>
-        <Btn95 onClick={() => window.open(proj.link, '_blank')}>🐙 View on GitHub</Btn95>
+        <Btn95 disabled style={{ opacity:0.5, cursor:'default' }}>🔒 Private Repository</Btn95>
       </div>
     </div>
   );
